@@ -1,0 +1,1 @@
+export default function RandomAnimation({ label }: { label: string }) { return <div className="slot" aria-live="polite"><span>🎲</span><div className="slot-word">{label}</div><small>Đang để bụng dẫn đường...</small></div>; }

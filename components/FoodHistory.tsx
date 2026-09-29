@@ -1,0 +1,2 @@
+import { Food } from "../types/food";
+export default function FoodHistory({ items, onReset }: { items: Food[]; onReset: () => void }) { if (!items.length) return null; return <section className="history"><div><p className="eyebrow">🕘 Món bạn vừa quay</p><div className="history-list">{items.map(item => <span key={item.id}>{item.name}</span>)}</div></div><button className="text-button" onClick={onReset}>Reset món đã loại</button></section>; }
