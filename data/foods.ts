@@ -1,4 +1,5 @@
 import { Category, Flavor, Food, Meal } from "../types/food";
+import { foodImages } from "./foodImages";
 
 type Seed = [string, Meal[], Category[], number, number, Flavor[], number, number, number, number];
 const img = "https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=1200&q=85";
@@ -231,6 +232,6 @@ const additionalSeeds: Seed[] = [
 ];
 
 export const foods: Food[] = [...seeds, ...additionalSeeds].map(([name, meals, categories, min, max, flavor, spicyLevel, fillingLevel, healthyScore, popularity], index) => ({
-  id: `food-${index + 1}`, name, meals, categories, priceMin: min, priceMax: max, flavor, spicyLevel, fillingLevel, healthyScore, popularity, image: foodPhotos[index % foodPhotos.length] ?? img,
+  id: `food-${index + 1}`, name, meals, categories, priceMin: min, priceMax: max, flavor, spicyLevel, fillingLevel, healthyScore, popularity, image: foodImages[name] ?? foodPhotos[index % foodPhotos.length] ?? img,
   description: foodDescriptions[name] ?? `${name} là lựa chọn quen thuộc, đậm chất ẩm thực Việt và dễ tìm trên các ứng dụng giao đồ ăn.`, searchKeywords: [name, name.toLowerCase()]
 }));
