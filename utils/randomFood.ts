@@ -17,3 +17,7 @@ export const selectFood = (foods: Food[], meal: Meal, filters: Filters, disliked
 
 export const mealForCurrentTime = (): Meal => { const hour = new Date().getHours(); return hour >= 5 && hour < 10.5 ? "breakfast" : hour >= 10.5 && hour < 14 ? "lunch" : "dinner"; };
 export const foodOfDay = (foods: Food[]) => { const d = new Date(); const seed = d.getFullYear() * 372 + (d.getMonth() + 1) * 31 + d.getDate(); return foods[seed % foods.length]; };
+export const foodForCurrentMeal = (foods: Food[], meal: Meal) => {
+  const candidates = foods.filter((food) => food.meals.includes(meal));
+  return candidates[Math.floor(Math.random() * candidates.length)] ?? foods[0];
+};

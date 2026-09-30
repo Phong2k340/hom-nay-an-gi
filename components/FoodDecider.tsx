@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { foodProvider } from "../services/foodProvider";
 import { Filters, Food, Meal } from "../types/food";
-import { foodOfDay, mealForCurrentTime, selectFood } from "../utils/randomFood";
+import { foodForCurrentMeal, mealForCurrentTime, selectFood } from "../utils/randomFood";
 import { addDisliked, getDisliked, getHistory, resetDisliked, saveHistory } from "../utils/storage";
 import FilterPanel from "./FilterPanel";
 import FoodHistory from "./FoodHistory";
@@ -24,10 +24,12 @@ export default function FoodDecider() {
   const [rolling, setRolling] = useState(false);
   const [slotLabel, setSlotLabel] = useState("Phở bò");
   const [notice, setNotice] = useState("");
+  const [suggestion, setSuggestion] = useState<Food | null>(null);
 
   useEffect(() => {
     setHistory(getHistory());
     setDisliked(getDisliked());
+    setSuggestion(foodForCurrentMeal(foods, mealForCurrentTime()));
   }, []);
 
   const choose = (auto = false) => {
@@ -65,7 +67,8 @@ export default function FoodDecider() {
   };
 
   const historyFoods = history.map((id) => foods.find((food) => food.id === id)).filter((item): item is Food => Boolean(item));
-  const today = foodOfDay(foods);
+  const currentMeal = mealForCurrentTime();
+  const currentMealLabel = { breakfast: "BỮA SÁNG", lunch: "BỮA TRƯA", dinner: "BỮA TỐI" }[currentMeal];
 
   return (
     <main className="app-shell">
@@ -103,11 +106,11 @@ export default function FoodDecider() {
         {result && !rolling && <FoodResult food={result} onAgain={() => choose()} onDislike={dislike} onShare={share} />}
       </section>
 
-      <section className="today">
+      {suggestion && <section className="today">
         <div className="today-icon">✦</div>
-        <div><p className="eyebrow">GỢI Ý CỦA HÔM NAY</p><b>{today.name}</b><small>Một lựa chọn chung cho ngày hôm nay.</small></div>
-        <button onClick={() => { setResult(today); window.scrollTo({ top: 450, behavior: "smooth" }); }} aria-label={"Xem " + today.name}>Khám phá <span>→</span></button>
-      </section>
+        <div><p className="eyebrow">GỢI Ý {currentMealLabel}</p><b>{suggestion.name}</b><small>Vừa chọn theo thời điểm bạn ghé trang.</small></div>
+        <button onClick={() => { setResult(suggestion); window.scrollTo({ top: 450, behavior: "smooth" }); }} aria-label={"Xem " + suggestion.name}>Khám phá <span>→</span></button>
+      </section>}
 
       <FoodHistory items={historyFoods} onReset={() => { resetDisliked(); setDisliked([]); setNotice("Đã reset danh sách món đã loại."); }} />
       <footer>Made with <span>♥</span> for Vietnamese food lovers</footer>
