@@ -2,6 +2,20 @@ import { Category, Flavor, Food, Meal } from "../types/food";
 
 type Seed = [string, Meal[], Category[], number, number, Flavor[], number, number, number, number];
 const img = "https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=1200&q=85";
+const foodPhotos = [
+  "https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1621852004158-f3bc188ecea3?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=1200&q=85",
+  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=85",
+];
 const seeds: Seed[] = [
   ["Phở bò",["breakfast","lunch","dinner"],["noodles","soup"],40000,65000,["rich","mild"],1,8,7,10], ["Phở gà",["breakfast","lunch"],["noodles","soup"],35000,55000,["light","mild"],0,7,8,9],
   ["Bún bò Huế",["breakfast","lunch","dinner"],["noodles","soup"],40000,65000,["spicy","rich"],3,8,7,10], ["Bún chả Hà Nội",["lunch","dinner"],["noodles"],40000,70000,["rich","mild"],0,8,6,10],
@@ -49,7 +63,35 @@ const seeds: Seed[] = [
   ["Chè đậu xanh",["lunch","dinner"],["snack","vegetarian"],15000,30000,["mild"],0,3,7,7], ["Sinh tố bơ",["breakfast","lunch"],["snack","vegetarian"],25000,45000,["mild"],0,4,8,8]
 ];
 
-export const foods: Food[] = seeds.map(([name, meals, categories, min, max, flavor, spicyLevel, fillingLevel, healthyScore, popularity], index) => ({
-  id: `food-${index + 1}`, name, meals, categories, priceMin: min, priceMax: max, flavor, spicyLevel, fillingLevel, healthyScore, popularity, image: img,
+const additionalSeeds: Seed[] = [
+  ["Bún thang",["breakfast","lunch"],["noodles","soup"],45000,70000,["light","rich"],0,7,8,8], ["Bún ngan",["breakfast","lunch"],["noodles","soup"],40000,65000,["rich"],0,8,7,8],
+  ["Bún dọc mùng",["breakfast","lunch"],["noodles","soup"],35000,55000,["light"],0,7,8,7], ["Bún kèn",["breakfast","lunch"],["noodles","soup"],40000,65000,["rich","mild"],1,7,7,7],
+  ["Bún quậy",["breakfast","lunch"],["noodles","soup"],45000,70000,["rich"],1,8,7,8], ["Bún sứa",["breakfast","lunch"],["noodles","soup"],40000,65000,["light"],0,7,9,7],
+  ["Bún hải sản",["lunch","dinner"],["noodles","soup"],45000,75000,["rich"],1,8,7,8], ["Bún lòng xào dưa",["lunch","dinner"],["noodles"],35000,60000,["rich"],0,8,5,7],
+  ["Phở sốt vang",["breakfast","lunch"],["noodles","soup"],50000,80000,["rich"],0,9,6,8], ["Phở cuốn",["lunch","dinner"],["cake"],40000,70000,["light","mild"],0,6,8,8],
+  ["Phở chiên phồng",["lunch","dinner"],["noodles"],50000,85000,["rich"],0,8,5,7], ["Mì vằn thắn",["breakfast","lunch"],["noodles","soup"],40000,65000,["rich"],0,7,7,8],
+  ["Mì hoành thánh",["breakfast","lunch"],["noodles","soup"],40000,65000,["light","mild"],0,7,7,8], ["Mì bò viên",["breakfast","lunch","dinner"],["noodles","soup"],35000,60000,["rich"],0,8,6,8],
+  ["Miến trộn",["lunch","dinner"],["noodles"],35000,60000,["rich","mild"],1,7,7,8], ["Miến xào cua",["lunch","dinner"],["noodles"],50000,85000,["rich"],0,8,6,7],
+  ["Cơm vịt quay",["lunch","dinner"],["rice"],50000,85000,["rich"],0,9,6,8], ["Cơm bò lúc lắc",["lunch","dinner"],["rice"],55000,90000,["rich"],0,9,6,8],
+  ["Cơm cà ri gà",["lunch","dinner"],["rice","soup"],45000,75000,["spicy","rich"],2,8,7,8], ["Cơm chiên dương châu",["lunch","dinner"],["rice"],35000,65000,["rich"],0,8,5,8],
+  ["Cơm mắm kho",["lunch","dinner"],["rice"],40000,70000,["rich"],1,8,6,7], ["Cơm hến",["lunch","dinner"],["rice"],25000,45000,["spicy","rich"],2,7,7,8],
+  ["Cơm cháy chà bông",["lunch","dinner"],["rice","snack"],30000,55000,["rich"],0,6,5,8], ["Cơm gà Hội An",["lunch","dinner"],["rice"],45000,75000,["rich","mild"],0,8,7,9],
+  ["Bánh mì heo quay",["breakfast","lunch"],["cake"],30000,50000,["rich"],0,8,5,9], ["Bánh mì chả cá",["breakfast","lunch"],["cake"],25000,45000,["rich","mild"],1,7,6,8],
+  ["Bánh mì gà xé",["breakfast","lunch"],["cake"],25000,45000,["rich","mild"],0,7,7,8], ["Bánh mì que",["breakfast","lunch"],["cake","snack"],12000,25000,["rich"],0,4,5,8],
+  ["Bánh ướt",["breakfast","lunch"],["cake"],25000,45000,["light","mild"],0,6,8,8], ["Bánh hỏi thịt nướng",["lunch","dinner"],["cake"],40000,70000,["rich"],0,8,6,8],
+  ["Bánh tằm bì",["lunch","dinner"],["cake"],30000,55000,["rich","mild"],0,7,6,7], ["Bánh lọc",["breakfast","lunch","dinner"],["cake","snack"],20000,40000,["mild"],1,5,7,8],
+  ["Bánh da lợn",["breakfast","lunch"],["cake","snack"],15000,30000,["mild"],0,4,5,7], ["Bánh ít",["breakfast","lunch"],["cake","snack"],15000,30000,["mild"],0,4,6,6],
+  ["Chả giò",["lunch","dinner"],["snack"],30000,55000,["rich"],0,6,5,9], ["Nem lụi",["lunch","dinner"],["snack"],35000,60000,["rich"],0,7,6,8],
+  ["Thịt xiên nướng",["lunch","dinner"],["snack"],20000,40000,["rich"],0,6,5,8], ["Bắp xào",["lunch","dinner"],["snack"],20000,35000,["rich"],1,5,5,8],
+  ["Trứng cút lộn xào me",["lunch","dinner"],["snack"],25000,45000,["rich","spicy"],2,6,5,8], ["Sườn nướng",["lunch","dinner"],["rice"],45000,80000,["rich"],0,9,6,9],
+  ["Ba chỉ nướng",["lunch","dinner"],["rice"],45000,80000,["rich"],0,9,5,8], ["Lẩu cá kèo",["dinner"],["soup"],80000,100000,["rich","mild"],1,10,7,8],
+  ["Lẩu mắm",["dinner"],["soup"],90000,100000,["rich"],1,10,6,9], ["Lẩu hải sản",["dinner"],["soup"],90000,100000,["rich"],1,10,7,9],
+  ["Canh khổ qua nhồi thịt",["lunch","dinner"],["soup"],35000,65000,["light"],0,7,8,7], ["Rau muống xào tỏi",["lunch","dinner"],["vegetarian"],25000,45000,["light"],0,5,9,8],
+  ["Đậu hũ chiên sả",["lunch","dinner"],["vegetarian","snack"],25000,45000,["spicy","rich"],2,6,8,7], ["Cà tím nướng mỡ hành",["lunch","dinner"],["vegetarian"],25000,45000,["rich"],0,5,9,7],
+  ["Canh nấm chay",["lunch","dinner"],["vegetarian","soup"],25000,45000,["light"],0,6,10,7], ["Gỏi xoài chay",["lunch","dinner"],["vegetarian","snack"],25000,45000,["light","spicy"],1,5,10,7],
+];
+
+export const foods: Food[] = [...seeds, ...additionalSeeds].map(([name, meals, categories, min, max, flavor, spicyLevel, fillingLevel, healthyScore, popularity], index) => ({
+  id: `food-${index + 1}`, name, meals, categories, priceMin: min, priceMax: max, flavor, spicyLevel, fillingLevel, healthyScore, popularity, image: foodPhotos[index % foodPhotos.length] ?? img,
   description: `${name} là lựa chọn quen thuộc, đậm chất ẩm thực Việt và dễ tìm trên các ứng dụng giao đồ ăn.`, searchKeywords: [name, name.toLowerCase()]
 }));
